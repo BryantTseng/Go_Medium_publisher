@@ -13,16 +13,6 @@ import (
 type APIHandler struct {
 	Token string
 }
-type UserProfile struct {
-	Data ProfileDetail
-}
-type ProfileDetail struct {
-	Id       string
-	Username string
-	Name     string
-	Url      string
-	ImageUrl string
-}
 
 // ReadConfig reads config from file. etc. medium access token
 func (a *APIHandler) ReadConfig() {
@@ -53,8 +43,6 @@ func (a APIHandler) GetUserDetail() {
 		// token not authorized
 		log.Fatalln("Token was invalid.")
 	}
-	var up UserProfile
 	body, err := ioutil.ReadAll(resp.Body)
-	json.Unmarshal(body, &up)
 	fmt.Printf(string(body))
 }
