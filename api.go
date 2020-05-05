@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,6 +11,20 @@ import (
 // APIHandler is a handler for calling api
 type APIHandler struct {
 	Token string
+}
+
+// UserProfile struct
+type UserProfile struct {
+	Data ProfileDetail
+}
+
+// ProfileDetail struct
+type ProfileDetail struct {
+	ID       string
+	Username string
+	Name     string
+	URL      string
+	ImageURL string
 }
 
 // ReadConfig reads config from file. etc. medium access token
@@ -26,7 +39,9 @@ func (a *APIHandler) ReadConfig() {
 	json.Unmarshal(data, &a)
 
 }
-func (a APIHandler) GetUserDetail() {
+
+// GetUserDetail use for test if the token is valid
+func (a APIHandler) GetUserDetail() ProfileDetail {
 	api := "https://api.medium.com/v1/me"
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", api, nil)
@@ -44,5 +59,7 @@ func (a APIHandler) GetUserDetail() {
 		log.Fatalln("Token was invalid.")
 	}
 	body, err := ioutil.ReadAll(resp.Body)
-	fmt.Printf(string(body))
+	profile := UserProfile{}
+	json.Unmarshal(body, &profile)
+	return profile.Data
 }
