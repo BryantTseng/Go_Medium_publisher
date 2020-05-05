@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -92,8 +91,6 @@ func (a APIHandler) NewPost(fPath string) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	ss, err := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(ss))
 	defer resp.Body.Close()
 
 }
@@ -119,6 +116,5 @@ func makePostBody(fPath string) []byte {
 	b.Content = string(data)
 	b.PublishStatus = "draft"
 	js, err := json.Marshal(b)
-	fmt.Println(string(js))
 	return js
 }
